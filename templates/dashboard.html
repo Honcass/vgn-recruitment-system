@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | VGN Recruitment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .details-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 650px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+        }
+
+        .modal-header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            margin-bottom: 1rem;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .clickable-row {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .clickable-row:hover {
+            background-color: #f8fafc !important;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo-section">
+                <img src="{{ url_for('static', filename='VGN.png') }}" alt="VGN Logo">
+                <span class="logo-text">Admin Dashboard</span>
+            </div>
+            <nav>
+                <a href="/logout" class="btn btn-outline">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 3rem 1.5rem;">
+        <div
+            style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 1.5rem;">
+            <div>
+                <h2 style="color: var(--primary-color); font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">
+                    Applicants Overview</h2>
+                <p style="color: var(--text-muted); font-size: 1rem;">Manage and review all recruitment applications</p>
+            </div>
+            <div
+                style="background: var(--primary-color); color: var(--accent-color); padding: 0.75rem 1.5rem; border-radius: 50px; font-weight: 700; box-shadow: var(--shadow-sm); font-size: 0.9rem;">
+                Total Applications: {{ applicants|length }}
+            </div>
+        </div>
+
+        <div class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Photo</th>
+                        <th>Full Name</th>
+                        <th>Age</th>
+                        <th>Phone</th>
+                        <th>NIN</th>
+                        <th>Previous Work</th>
+                        <th>Documents</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in applicants %}
+                    <tr class="clickable-row" data-id="{{ a[0] }}" data-name="{{ a[1] }} {{ a[2] }}"
+                        data-phone="{{ a[3] }}" data-address="{{ a[4] }}" data-nin="{{ a[6] }}" data-nok="{{ a[5] }}"
+                        data-age="{{ a[10] }}" data-previous="{{ a[11] if a[11] else 'None' }}" data-status="{{ a[9] }}"
+                        data-photo="{{ a[7] }}">
+                        <td
+                            style="font-family: 'Courier New', monospace; font-weight: 600; color: var(--primary-color); font-size: 0.85rem;">
+                            {{ a[0] }}</td>
+                        <td>
+                            <div
+                                style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-color); background: #f8fafc; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+                                {% if a[7] %}
+                                <img src="/uploads/{{ a[7] }}" alt="Photo"
+                                    style="width: 100%; height: 100%; object-fit: cover;">
+                                {% else %}
+                                <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: 600;">NO
+                                    IMAGE</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td style="font-weight: 700; color: var(--text-color);">{{ a[1] }} {{ a[2] }}</td>
+                        <td style="font-weight: 500;">{{ a[10] }}</td>
+                        <td style="font-size: 0.9rem; color: var(--text-muted);">{{ a[3] }}</td>
+                        <td style="font-family: monospace; font-size: 0.9rem;">{{ a[6] }}</td>
+                        <td>
+                            <div
+                                style="max-width: 200px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
+                                {{ a[11] if a[11] else 'None' }}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <a href="/uploads/{{ a[7] }}" target="_blank"
+                                    style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                    <span>🖼️</span> Photo
+                                </a>
+                                <a href="/uploads/{{ a[8] }}" target="_blank"
+                                    style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                    <span>📄</span> Guarantor
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-{{ a[9]|lower }}">
+                                {{ a[9] }}
+                            </span>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 8px;">
+                                {% if a[9] == 'Pending' %}
+                                <a href="/approve/{{ a[0] }}" class="btn btn-primary"
+                                    style="padding: 6px 12px; font-size: 0.75rem; background: #10b981; color: white; border-radius: 4px; box-shadow: none;">Approve</a>
+                                <a href="/reject/{{ a[0] }}" class="btn btn-outline"
+                                    style="padding: 6px 12px; font-size: 0.75rem; border-color: #ef4444; color: #ef4444; border-radius: 4px; margin: 0;">Reject</a>
+                                {% else %}
+                                <span style="color: var(--text-muted); font-size: 0.75rem; font-style: italic;">No
+                                    actions</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not applicants %}
+                    <tr>
+                        <td colspan="10"
+                            style="text-align: center; padding: 60px; color: var(--text-muted); font-weight: 500;">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">📂</div>
+                            No applications profiles found in the system.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer
+        style="padding: 20px 0; background: #f4f7f6; color: #888; text-align: center; border-top: 1px solid #ddd; margin-top: 40px;">
+        <div class="container">
+            <p>&copy; 2026 Vigilante Group of Nigeria Portal.</p>
+        </div>
+    </footer>
+
+    <div id="detailsModal" class="details-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalName" style="color: var(--primary-color); margin-bottom: 0.25rem;">Applicant Name</h2>
+                <p id="modalID" style="font-family: monospace; color: var(--text-muted); font-size: 0.9rem;">ID: #12345
+                </p>
+            </div>
+            <div class="modal-grid">
+                <div class="detail-item">
+                    <span class="detail-label">NIN</span>
+                    <span id="modalNIN" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Age</span>
+                    <span id="modalAge" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Phone</span>
+                    <span id="modalPhone" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Status</span>
+                    <span id="modalStatus" class="detail-value"></span>
+                </div>
+                <div class="detail-item full-width">
+                    <span class="detail-label">Address</span>
+                    <span id="modalAddress" class="detail-value"></span>
+                </div>
+                <div class="detail-item full-width">
+                    <span class="detail-label">Next of Kin</span>
+                    <span id="modalNOK" class="detail-value"></span>
+                </div>
+                <div class="detail-item full-width">
+                    <span class="detail-label">Previous Work Experience</span>
+                    <span id="modalPrevious" class="detail-value"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('detailsModal');
+            const closeBtn = document.getElementById('closeModal');
+            const rows = document.querySelectorAll('.clickable-row');
+
+            rows.forEach(row => {
+                row.addEventListener('click', function (e) {
+                    // Don't open modal if clicking on buttons or links
+                    if (e.target.closest('a') || e.target.closest('.btn')) return;
+
+                    document.getElementById('modalName').textContent = this.dataset.name;
+                    document.getElementById('modalID').textContent = 'ID: #' + this.dataset.id;
+                    document.getElementById('modalNIN').textContent = this.dataset.nin;
+                    document.getElementById('modalAge').textContent = this.dataset.age;
+                    document.getElementById('modalPhone').textContent = this.dataset.phone;
+                    document.getElementById('modalAddress').textContent = this.dataset.address;
+                    document.getElementById('modalNOK').textContent = this.dataset.nok;
+                    document.getElementById('modalPrevious').textContent = this.dataset.previous;
+                    document.getElementById('modalStatus').textContent = this.dataset.status;
+
+                    modal.style.display = 'flex';
+                });
+            });
+
+            closeBtn.onclick = function () {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

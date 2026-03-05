@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Admin Dashboard</title>
+</head>
+
+<body>
+
+<h2>VGN Recruitment Dashboard</h2>
+
+<table border="1">
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+{% for a in applicants %}
+
+<tr>
+<td>{{ a[0] }}</td>
+<td>{{ a[1] }} {{ a[2] }}</td>
+<td>{{ a[3] }}</td>
+<td>{{ a[9] }}</td>
+
+<td>
+<a href="/approve/{{ a[0] }}">Approve</a> |
+<a href="/reject/{{ a[0] }}">Reject</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,8 @@
+database.db
+uploads/
+__pycache__/
+.venv/
+.idea/
+*.pyc
+instance/
+.env

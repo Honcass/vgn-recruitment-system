@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Successful | VGN Recruitment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo-section">
+                <a href="/"
+                    style="text-decoration: none; display: flex; align-items: center; color: var(--accent-color);">
+                    <img src="{{ url_for('static', filename='VGN.png') }}" alt="VGN Logo">
+                    <span class="logo-text">Vigilante Group of Nigeria</span>
+                </a>
+            </div>
+            <nav>
+                <a href="/" class="btn btn-outline">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 100px 20px;">
+        <div class="form-container" style="text-align: center;">
+            <div style="font-size: 80px; color: #28a745; margin-bottom: 20px;">✅</div>
+            <h2 style="color: var(--primary-color);">Application Submitted!</h2>
+            <p style="margin: 20px 0; color: #666; font-size: 1.1rem;">Thank you for your interest in joining the
+                Vigilante Group of Nigeria.</p>
+
+            <div style="background: var(--bg-color); padding: 30px; border-radius: 10px; margin: 30px 0;">
+                <p style="font-weight: bold; margin-bottom: 10px;">Your Applicant ID:</p>
+                <div style="font-size: 2rem; font-family: monospace; letter-spacing: 5px; color: var(--primary-color);">
+                    {{ applicant_id }}</div>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #666;">Please keep this ID for your records and
+                    reference.</p>
+            </div>
+
+            <p style="margin-bottom: 30px; color: #666;">Our recruitment team will review your application and contact
+                you via phone if you are shortlisted for training.</p>
+
+            <div style="margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 15px;">
+                <a href="/" class="btn btn-primary"
+                    style="padding: 1rem 3rem; font-size: 1.25rem; box-shadow: 0 10px 15px -3px rgba(212, 175, 55, 0.4); width: 100%; max-width: 300px;">
+                    Return to Home
+                </a>
+                <a href="/check_status"
+                    style="color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 0.9rem;">
+                    Check Application Status &rarr;
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer
+        style="padding: 40px 0; background: #222; color: #bbb; text-align: center; position: fixed; bottom: 0; width: 100%;">
+        <div class="container">
+            <p>&copy; 2026 Vigilante Group of Nigeria. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

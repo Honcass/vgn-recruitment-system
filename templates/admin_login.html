@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | VGN Recruitment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="admin-login-body"
+    style="height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(0, 35, 102, 0.9), rgba(0, 35, 102, 0.9)), url('/static/VGN.png'); background-size: cover;">
+
+    <div class="form-container" style="max-width: 450px; width: 90%;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <img src="{{ url_for('static', filename='VGN.png') }}" alt="VGN Logo"
+                style="height: 80px; margin-bottom: 1rem;">
+            <h2 style="color: var(--primary-color); font-weight: 800; margin-bottom: 0.5rem;">Admin Access</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Sign in to manage recruitment portal</p>
+        </div>
+
+        <form action="/admin" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter administrator username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter administrator password" required
+                    style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #e2e8f0; border-radius: var(--radius); outline: none; transition: var(--transition);">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 1rem;">
+                Login to Dashboard
+            </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #f1f5f9;">
+            <a href="/"
+                style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition);"
+                onmouseover="this.style.color='var(--primary-color)'" onmouseout="this.style.color='var(--text-muted)'">
+                &larr; Back to Public Website
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>

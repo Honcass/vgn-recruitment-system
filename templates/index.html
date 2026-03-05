@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGN Recruitment | Vigilante Group of Nigeria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo-section">
+                <img src="{{ url_for('static', filename='VGN.png') }}" alt="VGN Logo">
+                <span class="logo-text">Vigilante Group of Nigeria</span>
+            </div>
+            <nav>
+                <a href="/admin" class="btn btn-outline">Admin Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Join the Vigilante Group of Nigeria Guard</h1>
+                    <p>Be part of a dedicated team committed to securing lives and property across Nigeria. Your service
+                        to the nation starts here.</p>
+                    <div class="hero-buttons">
+                        <a href="/apply" class="btn btn-primary">Apply Now</a>
+                        <a href="/check_status" class="btn btn-outline">Check Status</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Recruitment Process</h2>
+                    <p>Follow these simple steps to join our ranks.</p>
+                </div>
+
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="icon">📝</div>
+                        <h3>Online Registration</h3>
+                        <p>Fill out the application form with your personal details and upload the required documents.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="icon">🔍</div>
+                        <h3>Document Verification</h3>
+                        <p>Our team will review your NIN, guarantor form, and other credentials for authenticity.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="icon">🛡️</div>
+                        <h3>Training & Placement</h3>
+                        <p>Successful candidates undergo rigorous training before being deployed to their duty posts.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta" style="background: var(--primary-color); color: var(--white); text-align: center;">
+            <div class="container">
+                <h2>Ready to serve?</h2>
+                <p style="margin: 20px 0;">Applications for the current recruitment exercise are now open.</p>
+                <a href="/apply" class="btn btn-primary">Start Your Application</a>
+            </div>
+        </section>
+    </main>
+
+    <footer style="padding: 40px 0; background: #222; color: #bbb; text-align: center;">
+        <div class="container">
+            <p>&copy; 2026 Vigilante Group of Nigeria. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
