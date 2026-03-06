@@ -62,6 +62,9 @@
                         <h3 style="color: var(--primary-color);">{{ status_data[2] }} {{ status_data[1] }}</h3>
                         <p style="color: #666; font-size: 0.9rem;">ID: <span style="font-family: monospace;">{{
                                 status_data[0] }}</span></p>
+                        {% if status_data[11] %}
+                        <p style="color: #666; font-size: 0.9rem;">Previous Work: {{ status_data[11] }}</p>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -76,7 +79,7 @@
                         {% if status_data[9] == 'Pending' %}
                         Your application is currently being reviewed by our team. Please check back later for updates.
                         {% elif status_data[9] == 'Approved' %}
-                        Congratulations! Your application has been approved. You will receive a phone call or a text shortly with
+                        Congratulations! Your application has been approved. You will receive a phone call shortly with
                         details about your training and deployment.
                         {% elif status_data[9] == 'Rejected' %}
                         We regret to inform you that your application was not successful at this time. Thank you for

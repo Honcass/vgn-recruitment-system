@@ -106,6 +106,102 @@
         .full-width {
             grid-column: span 2;
         }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.25rem;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .print-btn {
+            background: #64748b;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media print {
+
+            header,
+            .action-bar,
+            footer,
+            .btn,
+            th:last-child,
+            td:last-child {
+                display: none !important;
+            }
+
+            main {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .container {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+
+            .data-table-container {
+                box-shadow: none !important;
+                border: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -137,96 +233,119 @@
             </div>
         </div>
 
-        <div class="data-table-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Photo</th>
-                        <th>Full Name</th>
-                        <th>Age</th>
-                        <th>Phone</th>
-                        <th>NIN</th>
-                        <th>Previous Work</th>
-                        <th>Documents</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for a in applicants %}
-                    <tr class="clickable-row" data-id="{{ a[0] }}" data-name="{{ a[1] }} {{ a[2] }}"
-                        data-phone="{{ a[3] }}" data-address="{{ a[4] }}" data-nin="{{ a[6] }}" data-nok="{{ a[5] }}"
-                        data-age="{{ a[10] }}" data-previous="{{ a[11] if a[11] else 'None' }}" data-status="{{ a[9] }}"
-                        data-photo="{{ a[7] }}">
-                        <td
-                            style="font-family: 'Courier New', monospace; font-weight: 600; color: var(--primary-color); font-size: 0.85rem;">
-                            {{ a[0] }}</td>
-                        <td>
-                            <div
-                                style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-color); background: #f8fafc; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
-                                {% if a[7] %}
-                                <img src="/uploads/{{ a[7] }}" alt="Photo"
-                                    style="width: 100%; height: 100%; object-fit: cover;">
-                                {% else %}
-                                <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: 600;">NO
-                                    IMAGE</span>
-                                {% endif %}
-                            </div>
-                        </td>
-                        <td style="font-weight: 700; color: var(--text-color);">{{ a[1] }} {{ a[2] }}</td>
-                        <td style="font-weight: 500;">{{ a[10] }}</td>
-                        <td style="font-size: 0.9rem; color: var(--text-muted);">{{ a[3] }}</td>
-                        <td style="font-family: monospace; font-size: 0.9rem;">{{ a[6] }}</td>
-                        <td>
-                            <div
-                                style="max-width: 200px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
-                                {{ a[11] if a[11] else 'None' }}
-                            </div>
-                        </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column; gap: 4px;">
-                                <a href="/uploads/{{ a[7] }}" target="_blank"
-                                    style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                                    <span>🖼️</span> Photo
-                                </a>
-                                <a href="/uploads/{{ a[8] }}" target="_blank"
-                                    style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                                    <span>📄</span> Guarantor
-                                </a>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="status-badge status-{{ a[9]|lower }}">
-                                {{ a[9] }}
-                            </span>
-                        </td>
-                        <td>
-                            <div style="display: flex; gap: 8px;">
-                                {% if a[9] == 'Pending' %}
-                                <a href="/approve/{{ a[0] }}" class="btn btn-primary"
-                                    style="padding: 6px 12px; font-size: 0.75rem; background: #10b981; color: white; border-radius: 4px; box-shadow: none;">Approve</a>
-                                <a href="/reject/{{ a[0] }}" class="btn btn-outline"
-                                    style="padding: 6px 12px; font-size: 0.75rem; border-color: #ef4444; color: #ef4444; border-radius: 4px; margin: 0;">Reject</a>
-                                {% else %}
-                                <span style="color: var(--text-muted); font-size: 0.75rem; font-style: italic;">No
-                                    actions</span>
-                                {% endif %}
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% if not applicants %}
-                    <tr>
-                        <td colspan="10"
-                            style="text-align: center; padding: 60px; color: var(--text-muted); font-weight: 500;">
-                            <div style="font-size: 2rem; margin-bottom: 1rem;">📂</div>
-                            No applications profiles found in the system.
-                        </td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+        <div class="action-bar">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by Name, NIN, or Phone...">
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="approved">Approved</button>
+                <button class="filter-btn" data-filter="rejected">Disqualified</button>
+            </div>
+
+            <button onclick="window.print()" class="btn print-btn">
+                <span>🖨️</span> Print Report
+            </button>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Photo</th>
+                    <th>Full Name</th>
+                    <th>Age</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>NIN</th>
+                    <th>Security Exp.</th>
+                    <th>Previous Work</th>
+                    <th>Documents</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in applicants %}
+                <tr class="clickable-row" data-id="{{ a[0] }}" data-name="{{ a[1] }} {{ a[2] }}" data-phone="{{ a[3] }}"
+                    data-email="{{ a[12] }}" data-address="{{ a[4] }}" data-nin="{{ a[6] }}" data-nok="{{ a[5] }}"
+                    data-age="{{ a[10] }}" data-security="{{ a[13] }}" data-previous="{{ a[11] if a[11] else 'None' }}"
+                    data-status="{{ a[9] }}" data-photo="{{ a[7] }}">
+                    <td
+                        style="font-family: 'Courier New', monospace; font-weight: 600; color: var(--primary-color); font-size: 0.85rem;">
+                        {{ a[0] }}</td>
+                    <td>
+                        <div
+                            style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; border: 2px solid var(--accent-color); background: #f8fafc; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
+                            {% if a[7] %}
+                            <img src="/uploads/{{ a[7] }}" alt="Photo"
+                                style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                            <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: 600;">NO
+                                IMAGE</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td style="font-weight: 700; color: var(--text-color);">{{ a[1] }} {{ a[2] }}</td>
+                    <td style="font-weight: 500;">{{ a[10] }}</td>
+                    <td style="font-size: 0.9rem; color: var(--text-muted);">{{ a[3] }}</td>
+                    <td style="font-size: 0.9rem; color: var(--text-muted);">{{ a[12] }}</td>
+                    <td style="font-family: monospace; font-size: 0.9rem;">{{ a[6] }}</td>
+                    <td style="font-weight: 600; text-align: center;">{{ a[13] }}/10</td>
+                    <td>
+                        <div style="max-width: 200px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">
+                            {{ a[11] if a[11] else 'None' }}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <a href="/uploads/{{ a[7] }}" target="_blank"
+                                style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                <span>🖼️</span> Photo
+                            </a>
+                            {% if a[8] %}
+                            <a href="/uploads/{{ a[8] }}" target="_blank"
+                                style="color: var(--primary-color); text-decoration: none; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                <span>📄</span> Guarantor
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge status-{{ a[9]|lower }}">
+                            {{ a[9] }}
+                        </span>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 8px;">
+                            {% if a[9] == 'Pending' %}
+                            <button
+                                onclick="openApproveModal('{{ a[0] }}', '{{ a[1]|addslashes }} {{ a[2]|addslashes }}', '{{ a[12] }}')"
+                                class="btn btn-primary"
+                                style="padding: 6px 12px; font-size: 0.75rem; background: #10b981; color: white; border-radius: 4px; box-shadow: none; border:none; cursor:pointer;">Approve</button>
+                            <a href="/reject/{{ a[0] }}" class="btn btn-outline"
+                                style="padding: 6px 12px; font-size: 0.75rem; border-color: #ef4444; color: #ef4444; border-radius: 4px; margin: 0; text-decoration: none;"
+                                onclick="return confirm('Disqualify this applicant?')">Disqualify</a>
+                            {% endif %}
+                            <a href="/delete/{{ a[0] }}" class="btn btn-outline"
+                                style="padding: 6px 12px; font-size: 0.75rem; border-color: #64748b; color: #64748b; border-radius: 4px; margin: 0; text-decoration: none;"
+                                onclick="return confirm('Are you sure you want to PERMANENTLY delete this record?')">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not applicants %}
+                <tr>
+                    <td colspan="12"
+                        style="text-align: center; padding: 60px; color: var(--text-muted); font-weight: 500;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">📂</div>
+                        No applications profiles found in the system.
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
         </div>
     </main>
 
@@ -262,6 +381,14 @@
                     <span class="detail-label">Status</span>
                     <span id="modalStatus" class="detail-value"></span>
                 </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email</span>
+                    <span id="modalEmail" class="detail-value"></span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Security Experience</span>
+                    <span id="modalSecurity" class="detail-value"></span>
+                </div>
                 <div class="detail-item full-width">
                     <span class="detail-label">Address</span>
                     <span id="modalAddress" class="detail-value"></span>
@@ -278,25 +405,108 @@
         </div>
     </div>
 
+    <!-- Approval Modal -->
+    <div id="approveModal" class="details-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeApproveModal()">&times;</span>
+            <div class="modal-header">
+                <h2 style="color: var(--primary-color); margin-bottom: 0.25rem;">Approve Applicant</h2>
+                <p id="approveModalName" style="color: var(--text-muted); font-size: 0.9rem;">Applicant Name</p>
+            </div>
+            <form id="approveForm" method="POST">
+                <div class="modal-grid">
+                    <div class="detail-item">
+                        <label class="detail-label">Interview Date</label>
+                        <input type="date" name="interview_date" required class="search-input"
+                            style="padding: 0.5rem; border-radius: 8px;">
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Interview Time</label>
+                        <input type="time" name="interview_time" required class="search-input"
+                            style="padding: 0.5rem; border-radius: 8px;">
+                    </div>
+                    <div class="detail-item full-width">
+                        <label class="detail-label">Interview Address</label>
+                        <input type="text" name="interview_address" value="VGN Headquarters, Nigeria" required
+                            class="search-input" style="padding: 0.5rem; border-radius: 8px;">
+                    </div>
+                    <div class="detail-item full-width">
+                        <label class="detail-label">Applicant Email</label>
+                        <input type="email" name="applicant_email" id="approveModalEmail" required class="search-input"
+                            style="padding: 0.5rem; border-radius: 8px;">
+                    </div>
+                    <div class="detail-item full-width">
+                        <label class="detail-label">Admin Contact Phone</label>
+                        <input type="text" name="admin_phone" value="08000000000" required class="search-input"
+                            style="padding: 0.5rem; border-radius: 8px;">
+                    </div>
+                </div>
+                <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" onclick="closeApproveModal()" class="btn btn-outline">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="background: #10b981;">Confirm Approval & Send
+                        Email</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const modal = document.getElementById('detailsModal');
             const closeBtn = document.getElementById('closeModal');
             const rows = document.querySelectorAll('.clickable-row');
+            const searchInput = document.getElementById('searchInput');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            let currentFilter = 'all';
+
+            // Filtering logic
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                rows.forEach(row => {
+                    const name = row.dataset.name.toLowerCase();
+                    const nin = row.dataset.nin.toLowerCase();
+                    const phone = row.dataset.phone.toLowerCase();
+                    const status = row.dataset.status.toLowerCase();
+
+                    const matchesSearch = name.includes(searchTerm) || nin.includes(searchTerm) || phone.includes(searchTerm);
+                    const matchesFilter = currentFilter === 'all' || status === currentFilter;
+
+                    if (matchesSearch && matchesFilter) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            searchInput.addEventListener('input', filterTable);
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    filterTable();
+                });
+            });
 
             rows.forEach(row => {
                 row.addEventListener('click', function (e) {
                     // Don't open modal if clicking on buttons or links
-                    if (e.target.closest('a') || e.target.closest('.btn')) return;
+                    if (e.target.closest('a') || e.target.closest('.btn') || e.target.closest('button')) return;
 
                     document.getElementById('modalName').textContent = this.dataset.name;
                     document.getElementById('modalID').textContent = 'ID: #' + this.dataset.id;
                     document.getElementById('modalNIN').textContent = this.dataset.nin;
                     document.getElementById('modalAge').textContent = this.dataset.age;
                     document.getElementById('modalPhone').textContent = this.dataset.phone;
+                    document.getElementById('modalEmail').textContent = this.dataset.email;
                     document.getElementById('modalAddress').textContent = this.dataset.address;
                     document.getElementById('modalNOK').textContent = this.dataset.nok;
                     document.getElementById('modalPrevious').textContent = this.dataset.previous;
+                    document.getElementById('modalSecurity').textContent = this.dataset.security + ' / 10';
                     document.getElementById('modalStatus').textContent = this.dataset.status;
 
                     modal.style.display = 'flex';
@@ -311,8 +521,22 @@
                 if (event.target == modal) {
                     modal.style.display = 'none';
                 }
+                if (event.target == document.getElementById('approveModal')) {
+                    closeApproveModal();
+                }
             }
         });
+
+        function openApproveModal(id, name, email) {
+            document.getElementById('approveModalName').textContent = name;
+            document.getElementById('approveModalEmail').value = email;
+            document.getElementById('approveForm').action = '/approve/' + id;
+            document.getElementById('approveModal').style.display = 'flex';
+        }
+
+        function closeApproveModal() {
+            document.getElementById('approveModal').style.display = 'none';
+        }
     </script>
 </body>
 

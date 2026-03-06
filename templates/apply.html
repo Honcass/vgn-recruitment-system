@@ -32,9 +32,13 @@
 
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <div class="alerts">
+        <div class="alerts" style="max-width: 850px; margin: 0 auto 30px;">
             {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
+            <div class="alert alert-{{ category }}" style="border-radius: 8px; box-shadow: var(--shadow-md);">
+                <i class="fas fa-{{ 'circle-check' if category == 'success' else 'triangle-exclamation' }}"
+                    style="margin-right: 12px; font-size: 1.2rem;"></i>
+                {{ message }}
+            </div>
             {% endfor %}
         </div>
         {% endif %}
@@ -70,9 +74,29 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" placeholder="e.g. name@example.com" required
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; outline: none;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
                         <label for="age">Age * (Must be 20 years or older)</label>
                         <input type="number" id="age" name="age" min="20" placeholder="Enter your age" required
                             style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; outline: none;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="security_experience">Level of Security Experience (1-10) *</label>
+                        <select id="security_experience" name="security_experience" required
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; outline: none; background: white;">
+                            <option value="" disabled selected>Select Rating</option>
+                            {% for i in range(1, 11) %}
+                            <option value="{{ i }}">{{ i }} - {{ 'Beginner' if i <= 3 else ('Intermediate' if i <=7
+                                    else 'Expert' ) }}</option>
+                                    {% endfor %}
+                        </select>
                     </div>
                 </div>
 
@@ -135,7 +159,8 @@
                     <small style="color: #888;">Clear portrait with a light background.</small>
                 </div>
 
-               <div style="margin-top: 40px; text-align: center;">
+
+                <div style="margin-top: 40px; text-align: center;">
                     <button type="submit" class="btn btn-primary"
                         style="width: 100%; font-size: 1.1rem; padding: 15px;">Submit Application</button>
                     <p style="margin-top: 15px; font-size: 0.9rem; color: #888;">By submitting this form, you certify
